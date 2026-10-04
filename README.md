@@ -7,6 +7,8 @@ This repository is configured as a Render Blueprint with two services:
 - `chatapp-api`: Express and Socket.IO backend
 - `chatapp-web`: Vite static frontend
 
+The backend is configured for Render's free web-service plan and the frontend is a free static site. Free backend services can spin down after inactivity, so the first request or socket connection may take about a minute to respond.
+
 1. Push this project to a GitHub repository and create a MongoDB Atlas database.
 2. In Render, create a new **Blueprint** from the repository and select the root `render.yaml`.
 3. When prompted, set `MONGODB_URL` to the Atlas connection string. The Blueprint generates `JWT_TOKEN` for you. `FRONTEND_URL` can temporarily be `http://localhost:5173`.

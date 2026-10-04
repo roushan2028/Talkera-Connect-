@@ -22,7 +22,7 @@ export const SocketProvider = ({ children }) => {
             return;
         }
 
-        const socket = io(API_URL, {
+        const socket = io("https://talkera-connect.onrender.com", {
             query: {
                 userId: authUser.user.id,
             }

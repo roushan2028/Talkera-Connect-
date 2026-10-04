@@ -2,6 +2,7 @@ services:
   - type: web
     name: chatapp-api
     runtime: node
+    plan: free
     rootDir: BackEnd
     buildCommand: npm ci
     startCommand: npm start
