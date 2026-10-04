@@ -2,19 +2,14 @@
 
 ## Deploy with Render
 
-This repository is configured as a Render Blueprint with two services:
+This repository is configured as one Render Web Service. It builds the Vite frontend and serves it from Express alongside the API and Socket.IO, so the website and backend use the same `onrender.com` URL. The service uses Render's free plan and may spin down after inactivity; the first request or socket connection afterward can take about a minute.
 
-- `chatapp-api`: Express and Socket.IO backend
-- `chatapp-web`: Vite static frontend
+1. In the existing Render Web Service, set **Root Directory** to `BackEnd`.
+2. Set **Build Command** to `npm ci && npm ci --include=dev --prefix FrontEnd && npm run build --prefix FrontEnd`.
+3. Set **Start Command** to `npm start`.
+4. Configure `MONGODB_URL` with the Atlas connection string, `JWT_TOKEN` with a long random secret, and `NODE_ENV` as `production`.
+5. Deploy the latest commit, then open the Web Service URL (for example, `https://talkera-connect.onrender.com/login`). The same URL serves the API and Socket.IO.
 
-The backend is configured for Render's free web-service plan and the frontend is a free static site. Free backend services can spin down after inactivity, so the first request or socket connection may take about a minute to respond.
-
-1. Push this project to a GitHub repository and create a MongoDB Atlas database.
-2. In Render, create a new **Blueprint** from the repository and select the root `render.yaml`.
-3. When prompted, set `MONGODB_URL` to the Atlas connection string. The Blueprint generates `JWT_TOKEN` for you. `FRONTEND_URL` can temporarily be `http://localhost:5173`.
-4. After both services are deployed, copy the frontend's public URL and set it as `FRONTEND_URL` on the `chatapp-api` service. Include `https://`, save the change, and let Render redeploy the backend.
-5. Open the frontend URL and test signup, login, loading users, sending messages, and live online status.
-
-`VITE_API_URL` is wired to the backend service by the Blueprint. Keep the MongoDB connection string and JWT secret in Render's environment settings; do not commit real values in `.env` files.
+Keep the MongoDB connection string and JWT secret in Render's environment settings; do not commit real values in `.env` files.
 
 For local development, copy `BackEnd/.env.example` to `BackEnd/.env` and `BackEnd/FrontEnd/.env.example` to `BackEnd/FrontEnd/.env`.

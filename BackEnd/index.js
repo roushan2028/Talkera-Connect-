@@ -4,6 +4,8 @@ import userRouter from './route/user.route.js';
 import messageRouter from './route/message.route.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import {app,server} from './socketIO/server.js';
 import { frontendOrigin } from './config.js';
 
@@ -28,6 +30,15 @@ const startServer = async () => {
 
         app.use('/chat', userRouter);
         app.use('/message', messageRouter);
+
+        const frontendDist = path.resolve('FrontEnd', 'dist');
+        const frontendIndex = path.join(frontendDist, 'index.html');
+        if (existsSync(frontendIndex)) {
+            app.use(express.static(frontendDist));
+            app.get('/{*path}', (_req, res) => {
+                res.sendFile(frontendIndex);
+            });
+        }
 
         server.listen(PORT, () => {
             console.log(`Server is listening to the port ${PORT}`);
